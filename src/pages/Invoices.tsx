@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   FileText, 
@@ -22,6 +21,7 @@ import {
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
+import AddInvoiceModal from '@/components/Invoices/AddInvoiceModal';
 
 interface Invoice {
   id: string;
@@ -107,8 +107,10 @@ const mockInvoices: Invoice[] = [
 
 const Invoices = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [invoices, setInvoices] = useState<Invoice[]>(mockInvoices);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   
-  const filteredInvoices = mockInvoices.filter(invoice => 
+  const filteredInvoices = invoices.filter(invoice => 
     invoice.invoiceNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
     invoice.client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     invoice.client.company.toLowerCase().includes(searchTerm.toLowerCase())
@@ -145,6 +147,10 @@ const Invoices = () => {
     }
   };
   
+  const handleAddInvoice = (newInvoice: Invoice) => {
+    setInvoices(prev => [newInvoice, ...prev]);
+  };
+  
   return (
     <div className="flex min-h-screen bg-olive-50/50">
       <div className="flex-1 overflow-auto">
@@ -154,7 +160,10 @@ const Invoices = () => {
               <h1 className="text-3xl font-bold text-olive-900">Invoices</h1>
               <p className="text-olive-600 mt-1">Create and manage invoices</p>
             </div>
-            <Button className="bg-olive-600 hover:bg-olive-700">
+            <Button 
+              className="bg-olive-600 hover:bg-olive-700"
+              onClick={() => setIsAddModalOpen(true)}
+            >
               <Plus size={16} className="mr-1" /> New Invoice
             </Button>
           </div>
@@ -192,7 +201,6 @@ const Invoices = () => {
                 </thead>
                 <tbody className="divide-y divide-olive-100">
                   {filteredInvoices.map((invoice) => {
-                    // Format dates
                     const issueDate = new Date(invoice.issueDate).toLocaleDateString();
                     const dueDate = new Date(invoice.dueDate).toLocaleDateString();
                     
@@ -253,6 +261,12 @@ const Invoices = () => {
           </div>
         </div>
       </div>
+      
+      <AddInvoiceModal 
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onAddInvoice={handleAddInvoice}
+      />
     </div>
   );
 };

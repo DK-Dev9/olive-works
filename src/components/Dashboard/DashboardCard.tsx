@@ -11,7 +11,7 @@ const DashboardCard = ({ className, children, ...props }: DashboardCardProps) =>
   return (
     <div 
       className={cn(
-        "dash-card animate-fade-up", 
+        "dash-card animate-fade-up bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300", 
         className
       )} 
       {...props}

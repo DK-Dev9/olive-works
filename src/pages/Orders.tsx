@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   ShoppingCart, 
@@ -22,6 +21,7 @@ import {
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
+import AddOrderModal from '@/components/Orders/AddOrderModal';
 
 interface Order {
   id: string;
@@ -107,8 +107,10 @@ const mockOrders: Order[] = [
 
 const Orders = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [orders, setOrders] = useState<Order[]>(mockOrders);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   
-  const filteredOrders = mockOrders.filter(order => 
+  const filteredOrders = orders.filter(order => 
     order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
     order.customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     order.customer.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -170,6 +172,10 @@ const Orders = () => {
     }
   };
   
+  const handleAddOrder = (newOrder: Order) => {
+    setOrders(prev => [newOrder, ...prev]);
+  };
+  
   return (
     <div className="flex min-h-screen bg-olive-50/50">
       <div className="flex-1 overflow-auto">
@@ -179,7 +185,10 @@ const Orders = () => {
               <h1 className="text-3xl font-bold text-olive-900">Orders</h1>
               <p className="text-olive-600 mt-1">Track and manage customer orders</p>
             </div>
-            <Button className="bg-olive-600 hover:bg-olive-700">
+            <Button 
+              className="bg-olive-600 hover:bg-olive-700"
+              onClick={() => setIsAddModalOpen(true)}
+            >
               <Plus size={16} className="mr-1" /> New Order
             </Button>
           </div>
@@ -218,7 +227,6 @@ const Orders = () => {
                 </thead>
                 <tbody className="divide-y divide-olive-100">
                   {filteredOrders.map((order) => {
-                    // Format date
                     const orderDate = new Date(order.date).toLocaleDateString();
                     
                     return (
@@ -281,6 +289,12 @@ const Orders = () => {
           </div>
         </div>
       </div>
+      
+      <AddOrderModal 
+        isOpen={isAddModalOpen} 
+        onClose={() => setIsAddModalOpen(false)}
+        onAddOrder={handleAddOrder}
+      />
     </div>
   );
 };
