@@ -10,6 +10,8 @@ import Clients from "./pages/Clients";
 import Products from "./pages/Products";
 import Invoices from "./pages/Invoices";
 import Orders from "./pages/Orders";
+import Reports from "./pages/Reports";
+import Settings from "./pages/Settings";
 import Navbar from "./components/Navbar";
 import { useIsMobile } from "./hooks/use-mobile";
 
@@ -72,6 +74,22 @@ const App = () => (
             element={
               <Layout>
                 <Orders />
+              </Layout>
+            } 
+          />
+          <Route 
+            path="/reports" 
+            element={
+              <Layout>
+                <Reports />
+              </Layout>
+            } 
+          />
+          <Route 
+            path="/settings" 
+            element={
+              <Layout>
+                <Settings />
               </Layout>
             } 
           />

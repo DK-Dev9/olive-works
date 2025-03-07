@@ -9,6 +9,7 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
+import AddClientModal from '@/components/Clients/AddClientModal';
 
 interface Client {
   id: string;
@@ -76,6 +77,7 @@ const mockClients: Client[] = [
 
 const Clients = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [isAddClientModalOpen, setIsAddClientModalOpen] = useState(false);
   
   const filteredClients = mockClients.filter(client => 
     client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -92,7 +94,10 @@ const Clients = () => {
               <h1 className="text-3xl font-bold text-olive-900">Clients</h1>
               <p className="text-olive-600 mt-1">Manage your client relationships</p>
             </div>
-            <Button className="bg-olive-600 hover:bg-olive-700">
+            <Button 
+              className="bg-olive-600 hover:bg-olive-700"
+              onClick={() => setIsAddClientModalOpen(true)}
+            >
               <Plus size={16} className="mr-1" /> Add Client
             </Button>
           </div>
@@ -180,6 +185,11 @@ const Clients = () => {
           </div>
         </div>
       </div>
+      
+      <AddClientModal 
+        open={isAddClientModalOpen}
+        onOpenChange={setIsAddClientModalOpen}
+      />
     </div>
   );
 };

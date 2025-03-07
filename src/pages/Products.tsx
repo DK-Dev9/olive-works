@@ -14,6 +14,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Badge } from '@/components/ui/badge';
+import AddProductModal from '@/components/Products/AddProductModal';
 
 interface Product {
   id: string;
@@ -92,6 +93,7 @@ const mockProducts: Product[] = [
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [view, setView] = useState<'grid' | 'list'>('grid');
+  const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
   
   const filteredProducts = mockProducts.filter(product => 
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -121,7 +123,10 @@ const Products = () => {
               <h1 className="text-3xl font-bold text-olive-900">Products</h1>
               <p className="text-olive-600 mt-1">Manage your product inventory</p>
             </div>
-            <Button className="bg-olive-600 hover:bg-olive-700">
+            <Button 
+              className="bg-olive-600 hover:bg-olive-700"
+              onClick={() => setIsAddProductModalOpen(true)}
+            >
               <Plus size={16} className="mr-1" /> Add Product
             </Button>
           </div>
@@ -285,6 +290,11 @@ const Products = () => {
           )}
         </div>
       </div>
+      
+      <AddProductModal 
+        open={isAddProductModalOpen}
+        onOpenChange={setIsAddProductModalOpen}
+      />
     </div>
   );
 };
